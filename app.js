@@ -2,8 +2,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const cors = require('cors');
 
 const  UserRouter = require('./routes/UserRoute')
+const  AuthRouter = require('./routes/AuthRoute')
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/klasa', {
@@ -11,11 +13,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/klasa', {
     useUnifiedTopology: true
 })
 
-// mongoose.connect(
-//     process.env.MONGO_URL
-//   )
-//   .then(()=>console.log('connected'))
-//   .catch(e=>console.log(e));
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200,
+    credentials: true
+    
+}
 
 const db = mongoose.connection
 
@@ -34,6 +37,15 @@ const app = express()
 app.use(morgan())
 app.use(bodyParser.urlencoded({extended: true}))
 
+app.use(cors(corsOptions));
+
+app.use((req,res,next)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+})
+
 app.use(express.json());
 //app.use(express.urlencoded({ extended: true }));
 
@@ -44,32 +56,5 @@ app.listen(PORT, ()=> {
 })
 
 app.use('/api/user', UserRouter)
+app.use('/api', AuthRouter)
 
-// app.get('/', (req, resp) => {
-//     resp.send("HELLO WORLD__");
-// })
-
-// // This responds a POST request for the homepage
-// app.post('/', function (req, res) {
-//     console.log("Got a POST request for the homepage");
-//     res.send('Hello POST');
-//  })
-
-//  // This responds a DELETE request for the /del_user page.
-// app.delete('/del_user', function (req, res) {
-//     console.log("Got a DELETE request for /del_user");
-//     res.send('Hello DELETE');
-//  })
-
-//  // This responds a GET request for the /list_user page.
-// app.get('/list_user', function (req, res) {
-//     console.log("Got a GET request for /list_user");
-//     res.send('Page Listing');
-//  })
-
-// const server = app.listen(8081, () => {
-//     let host = server.address().address
-//     let port = server.address().port
-    
-//     console.log("Example app listening at http://%s:%s", host, port)
-//  })
