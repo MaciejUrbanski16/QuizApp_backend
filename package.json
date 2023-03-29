@@ -4,7 +4,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "serve": "nodemon app.js"
   },
   "author": "Maciej Urbanski",
   "license": "ISC",
@@ -18,7 +19,7 @@
     "mongoose-paginate-v2": "^1.7.1",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.22"
   },
   "description": ""
 }

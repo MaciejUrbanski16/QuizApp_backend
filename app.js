@@ -5,7 +5,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 
 const  UserRouter = require('./routes/UserRoute')
-const  AuthRouter = require('./routes/AuthRoute')
+const  AuthRouter = require('./routes/AuthRoute');
+const  QuestionRouter = require('./routes/QuestionRoute');
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/klasa', {
@@ -57,4 +58,6 @@ app.listen(PORT, ()=> {
 
 app.use('/api/user', UserRouter)
 app.use('/api', AuthRouter)
+
+app.use('/api/db', QuestionRouter)
 

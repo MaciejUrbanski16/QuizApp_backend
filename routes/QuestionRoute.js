@@ -3,3 +3,7 @@ const { models } = require('mongoose')
 const router = express.Router()
 
 const QuestionController = require('../controllers/QuestionController')
+
+router.get('/geography', QuestionController.randomQuestion)
+
+module.exports = router
