@@ -47,6 +47,9 @@ console.log("Go into randomQuestion")
             question
         })
         questionId++;
+        if(questionId === 5){
+            questionId = 1;
+        }
     }
 
     //console.log("Response: " + result.id);
