@@ -7,6 +7,7 @@ const cors = require('cors');
 const  UserRouter = require('./routes/UserRoute')
 const  AuthRouter = require('./routes/AuthRoute');
 const  QuestionRouter = require('./routes/QuestionRoute');
+const  RankingRouter = require('./routes/RankingRoute')
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/klasa', {
@@ -60,4 +61,8 @@ app.use('/api/user', UserRouter)
 app.use('/api', AuthRouter)
 
 app.use('/api/db', QuestionRouter)
+
+app.use('/api/db/ranking', RankingRouter)
+
+
 

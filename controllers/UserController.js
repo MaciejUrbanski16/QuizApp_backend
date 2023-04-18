@@ -110,7 +110,6 @@ const index = (req, resp, next) => {
             messsage: 'An error occured!'
         })
     })
-
 }
 
 
