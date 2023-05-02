@@ -5,6 +5,9 @@ const questionSchema = new Schema({
     id: {
         type: Number
     },
+    // domain: {
+    //     type: String
+    // },
     question: {
         type: String
     },

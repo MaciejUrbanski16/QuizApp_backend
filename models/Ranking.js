@@ -13,6 +13,9 @@ const rankingShema = new Schema({
     },
     totalQuestions: {
         type: Number
+    },
+    domain: {
+        type: String
     }
 }, {timestamps: true})
 

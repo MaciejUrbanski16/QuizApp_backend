@@ -9,7 +9,8 @@ const storeNewRankingEntry = (req, resp, next) => {
         login: req.body.login,
         correctAnswers: req.body.correctAnswers,
         time: req.body.time,
-        totalQuestions: req.body.totalQuestions
+        totalQuestions: req.body.totalQuestions,
+        domain: req.body.domain
     })
     newRankingEntry.save()
         .then(respose => {
@@ -25,12 +26,12 @@ const storeNewRankingEntry = (req, resp, next) => {
             })
         })
 
-    console.log('New ranking entry: ' + req.body.login, " correct answers ", req.body.correctAnswers, " time ", req.body.time);
+    console.log('New ranking entry: ' + req.body.login, " correct answers ", req.body.correctAnswers, " time ", req.body.time, " domain ", req.body.doamin);
 }
 
 const getRanking = (req, resp, next) => {
     console.log("Ranking read in progress");
-    Ranking.find()
+    Ranking.find({domain: "geografia"})
         .sort({ correctAnswers: -1 })
         .sort({ time: -1 })
         .limit(10)
