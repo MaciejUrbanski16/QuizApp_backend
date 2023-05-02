@@ -29,9 +29,9 @@ const storeNewRankingEntry = (req, resp, next) => {
     console.log('New ranking entry: ' + req.body.login, " correct answers ", req.body.correctAnswers, " time ", req.body.time, " domain ", req.body.doamin);
 }
 
-const getRanking = (req, resp, next) => {
-    console.log("Ranking read in progress");
-    Ranking.find({domain: "geografia"})
+const getRankingGeography = (req, resp, next) => {
+    console.log("Ranking geography read in progress");
+    Ranking.find({ domain: "geografia" })
         .sort({ correctAnswers: -1 })
         .sort({ time: -1 })
         .limit(10)
@@ -47,16 +47,16 @@ const getRanking = (req, resp, next) => {
             })
         })
 
-        // Ranking.aggregate([
-        //     { $sort: { correctAnswers: -1, time: -1 } }, // sortujemy po priority malejąco, po otherField rosnąco
-        //     { $project: { index: { $add: [{$indexOfArray: ['$priority', '$priority']}, 1] }, correctAnswers: 1, time: 1 } } // dodajemy pole index oraz wyświetlamy pola priority i otherField
-        //   ]).sort({ index: 1 }).exec(function(err, sortedElements) {
-        //     if (err) {
-        //       // obsługa błędu
-        //     } else {
-        //       console.log("Posortowane elementy: " + sortedElements); // wyświetlamy posortowane elementy z dodaną liczbą porządkową
-        //     }
-        //   });
+    // Ranking.aggregate([
+    //     { $sort: { correctAnswers: -1, time: -1 } }, // sortujemy po priority malejąco, po otherField rosnąco
+    //     { $project: { index: { $add: [{$indexOfArray: ['$priority', '$priority']}, 1] }, correctAnswers: 1, time: 1 } } // dodajemy pole index oraz wyświetlamy pola priority i otherField
+    //   ]).sort({ index: 1 }).exec(function(err, sortedElements) {
+    //     if (err) {
+    //       // obsługa błędu
+    //     } else {
+    //       console.log("Posortowane elementy: " + sortedElements); // wyświetlamy posortowane elementy z dodaną liczbą porządkową
+    //     }
+    //   });
 
     // Ranking.findOne({login: "x8"})
     // .then(rank => {
@@ -70,7 +70,46 @@ const getRanking = (req, resp, next) => {
 
 }
 
+const getRankingPhysics = (req, resp, next) => {
+    console.log("Ranking physics read in progress");
+    Ranking.find({ domain: "fizyka" })
+        .sort({ correctAnswers: -1 })
+        .sort({ time: -1 })
+        .limit(10)
+        .then(response => {
+            resp.status(200).json({
+                response
+            })
+            console.log("Ranking read: " + resp.data)
+        })
+        .catch(error => {
+            resp.status(400).json({
+                messsage: 'An error occured!'
+            })
+        })
+}
+
+const getRankingMath = (req, resp, next) => {
+    console.log("Ranking physics read in progress");
+    Ranking.find({ domain: "matematyka" })
+        .sort({ correctAnswers: -1 })
+        .sort({ time: -1 })
+        .limit(10)
+        .then(response => {
+            resp.status(200).json({
+                response
+            })
+            console.log("Ranking read: " + resp.data)
+        })
+        .catch(error => {
+            resp.status(400).json({
+                messsage: 'An error occured!'
+            })
+        })
+}
+
+
 //export functions
 module.exports = {
-    storeNewRankingEntry, getRanking
+    storeNewRankingEntry, getRankingGeography, getRankingPhysics, getRankingMath
 }
