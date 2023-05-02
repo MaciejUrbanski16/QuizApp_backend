@@ -59,10 +59,10 @@ app.listen(PORT, ()=> {
 
 app.use('/api/user', UserRouter)
 app.use('/api', AuthRouter)
-
+app.use('/api/db/ranking', RankingRouter)
 app.use('/api/db', QuestionRouter)
 
-app.use('/api/db/ranking', RankingRouter)
+
 
 
 
