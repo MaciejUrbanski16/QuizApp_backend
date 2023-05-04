@@ -33,7 +33,7 @@ const getRankingGeography = (req, resp, next) => {
     console.log("Ranking geography read in progress");
     Ranking.find({ domain: "geografia" })
         .sort({ correctAnswers: -1 })
-        .sort({ time: -1 })
+        .sort({ time: 1 })
         .limit(10)
         .then(response => {
             resp.status(200).json({
@@ -74,7 +74,7 @@ const getRankingPhysics = (req, resp, next) => {
     console.log("Ranking physics read in progress");
     Ranking.find({ domain: "fizyka" })
         .sort({ correctAnswers: -1 })
-        .sort({ time: -1 })
+        .sort({ time: 1 })
         .limit(10)
         .then(response => {
             resp.status(200).json({
@@ -93,7 +93,7 @@ const getRankingMath = (req, resp, next) => {
     console.log("Ranking physics read in progress");
     Ranking.find({ domain: "matematyka" })
         .sort({ correctAnswers: -1 })
-        .sort({ time: -1 })
+        .sort({ time: 1 })
         .limit(10)
         .then(response => {
             resp.status(200).json({
