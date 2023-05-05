@@ -4,29 +4,105 @@ const Ranking = require('../models/Ranking')
 //store new ranking entry in database
 const storeNewRankingEntry = (req, resp, next) => {
 
-    console.log('Make store user in ranking' + req.body.login)
-    let newRankingEntry = new Ranking({
-        login: req.body.login,
-        correctAnswers: req.body.correctAnswers,
-        time: req.body.time,
-        totalQuestions: req.body.totalQuestions,
-        domain: req.body.domain
-    })
-    newRankingEntry.save()
-        .then(respose => {
-            console.log('then' + req.body.login)
-            resp.json({
-                message: 'New ranking entry added successfully'
-            })
-        })
-        .catch(error => {
-            console.log('catch error' + req.body.login)
-            resp.json({
-                message: 'New ranking entry was not added!'
-            })
-        })
+    let checkIfAddingUserNeeded = 0;
 
-    console.log('New ranking entry: ' + req.body.login, " correct answers ", req.body.correctAnswers, " time ", req.body.time, " domain ", req.body.doamin);
+    const filter = { login: req.body.login };
+
+    const updateDocumentWhenCorrectAnswersBetter = {
+        $set: {
+            correctAnswers: req.body.correctAnswers,
+            time: req.body.time
+        },
+    };
+
+    const noUpdate = {
+        $set: {
+        },
+    };
+
+    Ranking.findOne({ login: req.body.login }).then((user) => {
+        if (user) {
+            console.log("user with login ", req.body.login, " exists in ranking");
+            if (user.correctAnswers < req.body.correctAnswers) {
+                console.log("User updated in ranking due to better correctAnswers = ", req.body.correctAnswers);
+                const result = Ranking.updateOne(filter, updateDocumentWhenCorrectAnswersBetter).then(respose => {
+                    console.log('then' + req.body.login)
+                    resp.json({
+                        message: 'Ranking updated by better correctAnswers successfully'
+                    })
+                })
+                    .catch(error => {
+                        console.log('catch error' + req.body.login)
+                        resp.json({
+                            message: 'New ranking entry was not updated!'
+                        })
+                    })
+            }
+            else if (user.correctAnswers == req.body.correctAnswers && user.time > req.body.time) {
+                console.log("User updated in ranking due to better time = ", req.body.time);
+                const result = Ranking.updateOne(filter, updateDocumentWhenCorrectAnswersBetter).then(respose => {
+                    console.log('then' + req.body.login)
+                    resp.json({
+                        message: 'Ranking updated by better time successfully'
+                    })
+                })
+                    .catch(error => {
+                        console.log('catch error' + req.body.login)
+                        resp.json({
+                            message: 'New ranking entry was not updated!'
+                        })
+                    });
+            }
+            else{
+                console.log("User with login", user.login, " exists in ranking and update is not needed!")
+                const result = Ranking.updateOne(filter, noUpdate).then(respose => {
+                    console.log('then' + req.body.login)
+                    resp.json({
+                        message: 'Ranking updated by better time successfully'
+                    })
+                })
+                    .catch(error => {
+                        console.log('catch error' + req.body.login)
+                        resp.json({
+                            message: 'New ranking entry was not updated!'
+                        })
+                    });
+            }
+        }
+        else {
+            checkIfAddingUserNeeded = 1;
+            console.log("user with login ", login, " does not exist in ranking -> will be added");
+            //ad user to ranking
+        }
+    });
+
+
+
+    if (checkIfAddingUserNeeded === 1) {
+        console.log('Make store user in ranking' + req.body.login)
+        let newRankingEntry = new Ranking({
+            login: req.body.login,
+            correctAnswers: req.body.correctAnswers,
+            time: req.body.time,
+            totalQuestions: req.body.totalQuestions,
+            domain: req.body.domain
+        })
+        newRankingEntry.save()
+            .then(respose => {
+                console.log('then' + req.body.login)
+                resp.json({
+                    message: 'New ranking entry added successfully'
+                })
+            })
+            .catch(error => {
+                console.log('catch error' + req.body.login)
+                resp.json({
+                    message: 'New ranking entry was not added!'
+                })
+            })
+
+        console.log('New ranking entry: ' + req.body.login, " correct answers ", req.body.correctAnswers, " time ", req.body.time, " domain ", req.body.doamin);
+    }
 }
 
 const getRankingGeography = (req, resp, next) => {
@@ -71,7 +147,7 @@ const getRankingGeography = (req, resp, next) => {
 }
 
 const getRankingPhysics = (req, resp, next) => {
-    console.log("Ranking physics read in progress");
+
     Ranking.find({ domain: "fizyka" })
         .sort({ correctAnswers: -1 })
         .sort({ time: 1 })
@@ -80,11 +156,11 @@ const getRankingPhysics = (req, resp, next) => {
             resp.status(200).json({
                 response
             })
-            console.log("Ranking read: " + resp.data)
+
         })
         .catch(error => {
             resp.status(400).json({
-                messsage: 'An error occured!'
+                messsage: 'An error occured when physics ranking read!'
             })
         })
 }
