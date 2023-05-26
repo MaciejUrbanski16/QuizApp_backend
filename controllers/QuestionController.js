@@ -36,26 +36,86 @@ const randomQuestionGeography = (req, resp, next) => {
     //         message: 'An error occured durinng question adding!'
     //     })
     // })
+ 
+    let questionsArray = []
 
-    //console.log("Go into randomQuestion")
-    Question.findOne({ id: questionIdForGeography })
-        .then(question => {
-
-
-
-            console.log("Find: " + question.id + " " + question.question);
-            resp.json({
+    console.log("Go into randomQuestion")
+    // Question.findOne({ id: 1 }).then(question => {
+    //     console.log("Znaleziono pytanie : " + question.id + " " + question.question);
+    //     questionsArray.push(question)
+    // })
+   
+    // Question.findOne({ id: 2 }).then(question => {
+    //     console.log("Znaleziono pytanie : " + question.id + " " + question.question);
+    //     questionsArray.push(question)
+    // })
+    // Question.findOne({ id: 3 }).then(question => {
+    //     console.log("Znaleziono pytanie : " + question.id + " " + question.question);
+    //     questionsArray.push(question)
+    // })
+    // Question.findOne({ id: 4 }).then(question => {
+    //     console.log("Znaleziono pytanie : " + question.id + " " + question.question);
+    //     questionsArray.push(question)
+    // })
+    // Question.findOne({ id: 5 }).then(question => {
+    //     console.log("Znaleziono pytanie : " + question.id + " " + question.question);
+    //     questionsArray.push(question)
+    // })
+    Question.find().limit(5).then(question => {
+        console.log("Znaleziono liczbe pytan : " + question[0].question);
+        resp.json({
                 message: "Everything OK",
                 question
             })
-            questionIdForGeography++;
-            if (questionIdForGeography === 5) {
-                questionIdForGeography = 1;
-            }
-        }
+    })
+   
+    // for (let i = 0; i < questionsArray.length; i++) {
+    //     const element = questionsArray[i];
+    //     console.log("Iteracja po elemenach", element.question);
+    //   }
+    //   const el = questionsArray[0]
+    //   console.log("Element pojedynczy ", el)
+    // resp.json({message:"Odpowiedz z tablica danych",
+    //             questionsArray
+    //         })
 
-            //console.log("Response: " + result.id);
-        )
+    //console.log("Pobrane pytanie to: ", question.question)
+    // Question.findOne({ id: questionIdForGeography })
+    //     .then(question => {
+
+
+
+    //         console.log("Find: " + question.id + " " + question.question);
+    //         resp.json({
+    //             message: "Everything OK",
+    //             question
+    //         })
+    //         questionIdForGeography++;
+    //         if (questionIdForGeography === 5) {
+    //             questionIdForGeography = 1;
+    //         }
+    //     }
+
+    //         //console.log("Response: " + result.id);
+    //     )
+    // Question.find().limit(5)
+    //     .then(question => {
+
+
+
+    //         console.log("Find: " + question.id + " " + question.question);
+    //         resp.json({
+    //             message: "Everything OK",
+    //             question
+    //         })
+    //         questionIdForGeography++;
+    //         if (questionIdForGeography === 5) {
+    //             questionIdForGeography = 1;
+    //         }
+    //     }
+
+    //         //console.log("Response: " + result.id);
+    //     )
 }
 
 //show single question
