@@ -6,7 +6,7 @@ const storeNewRankingEntry = (req, resp, next) => {
 
     let checkIfAddingUserNeeded = 0;
 
-    const filter = { login: req.body.login };
+    const filter = { login: req.body.login, domain: req.body.domain };
 
     const updateDocumentWhenCorrectAnswersBetter = {
         $set: {
@@ -20,13 +20,15 @@ const storeNewRankingEntry = (req, resp, next) => {
         },
     };
 
-    Ranking.findOne({ login: req.body.login }).then((user) => {
+    console.log("New user for ranking: login ", req.body.login, "domain", req.body.domain)
+
+    Ranking.findOne({ login: req.body.login, domain: req.body.domain }).then((user) => {
         if (user) {
             console.log("user with login ", req.body.login, " exists in ranking");
             if (user.correctAnswers < req.body.correctAnswers) {
                 console.log("User updated in ranking due to better correctAnswers = ", req.body.correctAnswers);
                 const result = Ranking.updateOne(filter, updateDocumentWhenCorrectAnswersBetter).then(respose => {
-                    console.log('then' + req.body.login)
+                    console.log('then ' + req.body.login)
                     resp.json({
                         message: 'Ranking updated by better correctAnswers successfully'
                     })
@@ -108,8 +110,9 @@ const storeNewRankingEntry = (req, resp, next) => {
 }
 
 const getRankingGeography = (req, resp, next) => {
-    console.log("Ranking geography read in progress");
-    Ranking.find({})
+    const domain = req.body;
+    console.log("Ranking geography read in progress  for domain: ", req.params);
+    Ranking.find({ domain: "geografia" })
         .sort({ correctAnswers: -1 })
         .sort({ time: 1 })
         .limit(10)
@@ -149,7 +152,7 @@ const getRankingGeography = (req, resp, next) => {
 }
 
 const getRankingPhysics = (req, resp, next) => {
-
+    console.log("Ranking physics read in progress");
     Ranking.find({ domain: "fizyka" })
         .sort({ correctAnswers: -1 })
         .sort({ time: 1 })

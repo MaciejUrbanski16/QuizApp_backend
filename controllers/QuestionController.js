@@ -61,10 +61,10 @@ const randomQuestionGeography = (req, resp, next) => {
     //     console.log("Znaleziono pytanie : " + question.id + " " + question.question);
     //     questionsArray.push(question)
     // })
-    Question.find().limit(5).then(question => {
+    Question.find({domain: "geografia"}).limit(5).then(question => {
         console.log("Znaleziono liczbe pytan : " + question[0].question);
         resp.json({
-                message: "Everything OK",
+                message: "Everything OK with geography read",
                 question
             })
     })
@@ -151,24 +151,13 @@ const randomQuestionMath = (req, resp, next) => {
     // })
 
     console.log("Go into randomQuestionMath")
-    Question.findOne({ id: questionIdForMath})
-        .then(question => {
-
-
-
-            console.log("Find: " + question.id + " " + question.question);
-            resp.json({
-                message: "Everything OK",
+    Question.find({domain: "matematyka"}).limit(5).then(question => {
+        console.log("Znaleziono liczbe pytan : " + question[0].question);
+        resp.json({
+                message: "Everything OK with math read",
                 question
             })
-            questionIdForMath++;
-            if (questionIdForMath === 105) {
-                questionIdForMath = 100;
-            }
-        }
-
-            //console.log("Response: " + result.id);
-        )
+    })
 }
 
 //show single question
@@ -205,24 +194,13 @@ const randomQuestionPhysics = (req, resp, next) => {
     // console.log("added new question randomQuestionPhysics questionId: ", questionId);
 
     //console.log("Go into randomQuestion")
-    Question.findOne({ id: questionIdForPhysics })
-        .then(question => {
-
-
-
-            console.log("Find: "  + " " + question.question);
-            resp.json({
-                message: "Everything OK",
+    Question.find({domain: "fizyka"}).limit(5).then(question => {
+        console.log("Znaleziono liczbe pytan : " + question[0].question);
+        resp.json({
+                message: "Everything OK with physics read",
                 question
             })
-            questionIdForPhysics++;
-            if (questionIdForPhysics === 205) {
-                questionIdForPhysics = 200;
-            }
-        }
-
-            //console.log("Response: " + result.id);
-        )
+    })
 }
 
 
