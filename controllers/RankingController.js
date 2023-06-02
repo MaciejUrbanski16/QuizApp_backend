@@ -1,7 +1,7 @@
 const { response } = require('express')
 const Ranking = require('../models/Ranking')
 
-//store new ranking entry in database
+
 const storeNewRankingEntry = (req, resp, next) => {
 
     let checkIfAddingUserNeeded = 0;
@@ -102,8 +102,6 @@ const storeNewRankingEntry = (req, resp, next) => {
         }
     });
 
-
-
     if (checkIfAddingUserNeeded === 1) {
 
     }
@@ -127,28 +125,6 @@ const getRankingGeography = (req, resp, next) => {
                 messsage: 'An error occured!'
             })
         })
-
-    // Ranking.aggregate([
-    //     { $sort: { correctAnswers: -1, time: -1 } }, // sortujemy po priority malejąco, po otherField rosnąco
-    //     { $project: { index: { $add: [{$indexOfArray: ['$priority', '$priority']}, 1] }, correctAnswers: 1, time: 1 } } // dodajemy pole index oraz wyświetlamy pola priority i otherField
-    //   ]).sort({ index: 1 }).exec(function(err, sortedElements) {
-    //     if (err) {
-    //       // obsługa błędu
-    //     } else {
-    //       console.log("Posortowane elementy: " + sortedElements); // wyświetlamy posortowane elementy z dodaną liczbą porządkową
-    //     }
-    //   });
-
-    // Ranking.findOne({login: "x8"})
-    // .then(rank => {
-
-    //     console.log("Find: login: " + rank.login + " correct answers: " + rank.correctAnswers);
-    //     resp.json({
-    //         message: "Everything OK",
-    //         rank
-    //     })
-    // })
-
 }
 
 const getRankingPhysics = (req, resp, next) => {
@@ -189,8 +165,6 @@ const getRankingMath = (req, resp, next) => {
         })
 }
 
-
-//export functions
 module.exports = {
     storeNewRankingEntry, getRankingGeography, getRankingPhysics, getRankingMath
 }
